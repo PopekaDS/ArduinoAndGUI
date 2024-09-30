@@ -57,19 +57,21 @@ void setup() {
 
 void loop() {
     if (Serial.available() > 0) {
-    lcd.clear();
-    char a = Serial.read();
+      lcd.clear();
+      char string[17];
+      for (int i = 0; i < 16; i++)
+      {
+        delay(2);
+        string[i] = Serial.read();
+        if(int(string[i]) == -1) {
+          string[i] = ' ';
+        }
 
-    if (a == 'b') {
-      lcd.print("Blue is on");
-      Serial.print("Blue is on");
-    } else if (a == 'r') {
-      lcd.print("Red is on");
-      Serial.print("Red is on");
-    } else {
-      lcd.print("What?!");
-      Serial.print("What?!");
-    }
+        Serial.print(char(string[i]));
+      }
+      string[16] = 0;
+      lcd.setCursor(0, 0);
+      lcd.print(string);
   }
 }
 

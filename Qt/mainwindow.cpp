@@ -97,3 +97,29 @@ void MainWindow::on_pushButton_2_clicked()
     serialPort.close();
 }
 
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    QSerialPort serialPort;
+
+    serialPort.setPortName(this->ui->cmbPort->currentText());
+    serialPort.setBaudRate(QSerialPort::Baud9600);
+
+    if (!serialPort.open(QIODevice::ReadWrite)) {
+        QMessageBox::warning(this, "Ошибка", "Не удалось подключится к порту");
+        return;
+    }
+
+    serialPort.write("New text"); // меняем тут b на r
+    serialPort.waitForBytesWritten();
+
+    QByteArray data;
+    while (serialPort.waitForReadyRead(10)) {
+        data.append(serialPort.readAll());
+    }
+
+    ui->txtOutput->append(data);
+
+    serialPort.close();
+}
+
