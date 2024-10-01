@@ -52,26 +52,66 @@ void setup() {
   lcd.begin(16, 2);
   // Print a message to the LCD.
   lcd.clear();
-  lcd.print("hello, world!");
+  lcd.print("wait ...");
 }
 
 void loop() {
     if (Serial.available() > 0) {
       lcd.clear();
-      char string[17];
-      for (int i = 0; i < 16; i++)
-      {
+      char check = '1';
+      check = Serial.read();
+
+      char string[50];
+      if (check == '0') {
+        for (int i = 0; i < 16; i++)
+        {
+          delay(2);
+          string[i] = Serial.read();
+          if(int(string[i]) == -1) {
+            string[i] = ' ';
+          }
+
+          Serial.print(char(string[i]));
+        }
+        string[16] = 0;
+        lcd.setCursor(0, 0);
+        lcd.print(string);
+
+      } else {
         delay(2);
-        string[i] = Serial.read();
-        if(int(string[i]) == -1) {
-          string[i] = ' ';
+        char f = Serial.read();
+        delay(2);
+        char s = Serial.read();
+        delay(2);
+
+        int size = (int(f - '0')) * 10 + int(s - '0');
+        for (int i = 0; i < size; i++)
+        {
+          delay(2);
+          string[i] = Serial.read();
+          if(int(string[i]) == -1) {
+            string[i] = ' ';
+          }
+
+          Serial.print(char(string[i]));
         }
 
-        Serial.print(char(string[i]));
+        string[size] = 0;
+        lcd.setCursor(0, 0);
+        lcd.print(string);
+
+        // scroll 13 positions (string length) to the left
+        // to move it offscreen left:
+        for (int positionCounter = 0; positionCounter < size; positionCounter++) {
+          // scroll one position left:
+          lcd.scrollDisplayLeft();
+          // wait a bit:
+          delay(500);
+        }
+
+      // delay at the end of the full loop:
+      delay(1000);
       }
-      string[16] = 0;
-      lcd.setCursor(0, 0);
-      lcd.print(string);
   }
 }
 
