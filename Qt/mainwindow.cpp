@@ -43,16 +43,19 @@ void MainWindow::on_pushButton_3_clicked()
     int login_ba_size = qs.size();
     QByteArray q_b;
     if(login_ba_size <= 16) {
+        // Отправляем 0
         q_b.setNum(0);
         serialPort.write(q_b);
     } else {
+        // Отправляем 1
+        // Следом отправляем размер строки
         q_b.setNum(1);
         serialPort.write(q_b);
         q_b.setNum(login_ba_size);
         serialPort.write(q_b);
     }
 
-
+    // Отправляем строку
     serialPort.write(login_ba);
     serialPort.waitForBytesWritten();
 
