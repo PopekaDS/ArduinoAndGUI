@@ -21,8 +21,8 @@
 const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
-char checkMove = '0';
-char string[50];
+// char string[40];
+bool checkMove2 = false;
 
 void setup() {
   Serial.begin(9600);
@@ -37,9 +37,12 @@ void loop() {
       // Проверяем первый байт, если
       // 0 - строка на дисплее стоит на месте
       // 1 - строка на дисплее будет двигаться влево
-      checkMove = Serial.read();
+      char checkMove = Serial.read();
 
       if (checkMove == '0') {
+        checkMove2 = false;
+        char string[40] = "00000000000000000000000000000000000000\n";
+
         for (int i = 0; i < 16; i++)
         {
           delay(2);
@@ -54,11 +57,16 @@ void loop() {
         lcd.setCursor(0, 0);
         lcd.print(string);
       } else {
+        checkMove2 = true;
+        char string[40] = "00000000000000000000000000000000000000\n";
+
         delay(2);
         char f = Serial.read();
         delay(2);
         char s = Serial.read();
         delay(2);
+        lcd.setCursor(0, 1);
+        lcd.print(checkMove); lcd.print(" "); lcd.print(f); lcd.print(s);
 
         int size = (int(f - '0')) * 10 + int(s - '0');
         for (int i = 0; i < size; i++)
@@ -66,13 +74,17 @@ void loop() {
           delay(2);
           string[i] = Serial.read();
           if(int(string[i]) == -1) {
-            string[i] = ' ';
+            string[i] = 0;
           }
-
           Serial.print(char(string[i]));
         }
 
-        string[size] = 0;
+        for (int i = size; i < 40; i++) {
+          delay(2);
+          string[i] = 0;
+        }
+
+        string[40] = 0;
         lcd.setCursor(0, 0);
         lcd.print(string);
 /*
@@ -87,8 +99,6 @@ void loop() {
 
       // delay at the end of the full loop:
       delay(1000);
-      lcd.setCursor(0, 1);
-        lcd.print(checkMove);
       }
       
   }
@@ -96,6 +106,11 @@ void loop() {
   /*
 если чек = 1 то сделать сдвиг
   */
+if(checkMove2) {
+  lcd.scrollDisplayLeft();
+  delay(500);
+}
+
 }
 
 

@@ -6,6 +6,7 @@
 #include <QSerialPortInfo>
 #include <QString>
 #include <QByteArray>
+#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -42,6 +43,7 @@ void MainWindow::on_pushButton_3_clicked()
 
     int login_ba_size = qs.size();
     QByteArray q_b;
+    // Отправляем первый байт
     if(login_ba_size <= 16) {
         // Отправляем 0
         q_b.setNum(0);
@@ -51,7 +53,13 @@ void MainWindow::on_pushButton_3_clicked()
         // Следом отправляем размер строки
         q_b.setNum(1);
         serialPort.write(q_b);
-        q_b.setNum(login_ba_size);
+        int login_ba_size1 = login_ba_size / 10;
+        int login_ba_size2 = login_ba_size % 10;
+
+        q_b.setNum(login_ba_size1);
+        serialPort.write(q_b);
+
+        q_b.setNum(login_ba_size2);
         serialPort.write(q_b);
     }
 
