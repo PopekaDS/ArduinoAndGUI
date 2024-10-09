@@ -53,17 +53,15 @@ void MainWindow::on_pushButton_3_clicked()
         // Следом отправляем размер строки
         q_b.setNum(1);
         serialPort.write(q_b);
-        int login_ba_size1 = login_ba_size / 10;
-        int login_ba_size2 = login_ba_size % 10;
 
-        q_b.setNum(login_ba_size1);
-        serialPort.write(q_b);
-
-        q_b.setNum(login_ba_size2);
-        serialPort.write(q_b);
+        int diff = 30 - login_ba_size;
+        for(int k = 0; k < diff; k++) {
+            login_ba += "!";
+        }
     }
 
     // Отправляем строку
+    qDebug() << login_ba.size() << login_ba;
     serialPort.write(login_ba);
     serialPort.waitForBytesWritten();
 
