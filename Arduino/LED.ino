@@ -38,6 +38,8 @@ void loop() {
       // 0 - строка на дисплее стоит на месте
       // 1 - строка на дисплее будет двигаться влево
       char checkMove = Serial.read();
+      Serial.print(checkMove);
+      Serial.print(' ');
 
       if (checkMove == '0') {
         checkMove2 = false;
@@ -58,33 +60,31 @@ void loop() {
         lcd.print(string);
       } else {
         checkMove2 = true;
-        char string[40] = "00000000000000000000000000000000000000\n";
-
+        char string[35] = "00000000000000000000000000000000000000\n";
+        
         delay(2);
         char f = Serial.read();
+        Serial.print(f);
         delay(2);
         char s = Serial.read();
+        Serial.print(s);
+        Serial.print(' ');
         delay(2);
-        lcd.setCursor(0, 1);
-        lcd.print(checkMove); lcd.print(" "); lcd.print(f); lcd.print(s);
 
         int size = (int(f - '0')) * 10 + int(s - '0');
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < 30; i++)
         {
           delay(2);
           string[i] = Serial.read();
           if(int(string[i]) == -1) {
             string[i] = 0;
+          } else {
+            Serial.print(char(string[i]));
           }
-          Serial.print(char(string[i]));
         }
 
-        for (int i = size; i < 40; i++) {
-          delay(2);
-          string[i] = 0;
-        }
-
-        string[40] = 0;
+        //string[34] = 0;
+        string[35] = 0;
         lcd.setCursor(0, 0);
         lcd.print(string);
 /*
@@ -101,15 +101,15 @@ void loop() {
       delay(1000);
       }
       
-  }
+  } else if(checkMove2) {
+  lcd.scrollDisplayLeft();
+  delay(500);
+}
 
   /*
 если чек = 1 то сделать сдвиг
   */
-if(checkMove2) {
-  lcd.scrollDisplayLeft();
-  delay(500);
-}
+
 
 }
 
