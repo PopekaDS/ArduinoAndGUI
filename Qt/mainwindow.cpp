@@ -53,24 +53,18 @@ void MainWindow::on_pushButton_3_clicked()
         // Следом отправляем размер строки
         q_b.setNum(1);
         serialPort.write(q_b);
-
-        int diff = 30 - login_ba_size;
-        for(int k = 0; k < diff; k++) {
-            login_ba += "!";
-        }
     }
 
     // Отправляем строку
-    qDebug() << login_ba.size() << login_ba;
     serialPort.write(login_ba);
     serialPort.waitForBytesWritten();
 
     QByteArray data;
-    while (serialPort.waitForReadyRead(10)) {
+    while (serialPort.waitForReadyRead(10) || data.isEmpty()) {
         data.append(serialPort.readAll());
     }
 
-    ui->txtOutput->append(data);
+    ui->txtOutput->append(QString(data));
 
     serialPort.close();
     ui->lineEdit->clear();
