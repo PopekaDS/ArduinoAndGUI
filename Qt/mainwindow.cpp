@@ -6,7 +6,6 @@
 #include <QSerialPortInfo>
 #include <QString>
 #include <QByteArray>
-#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -14,6 +13,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     ui->lineEdit->setPlaceholderText("Введите текст");
+    ui->lineEdit->setFocus();
+    ui->txtOutput->setReadOnly(true);
 
     foreach (const QSerialPortInfo &serialPortInfo, QSerialPortInfo::availablePorts())
     {
@@ -64,6 +65,7 @@ void MainWindow::on_pushButton_3_clicked()
         data.append(serialPort.readAll());
     }
 
+    data[0] = '>';
     ui->txtOutput->append(QString(data));
 
     serialPort.close();
