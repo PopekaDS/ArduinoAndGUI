@@ -6,6 +6,7 @@
 #include <QSerialPortInfo>
 #include <QString>
 #include <QByteArray>
+#include <QRegularExpression>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -15,6 +16,10 @@ MainWindow::MainWindow(QWidget *parent)
     ui->lineEdit->setPlaceholderText("Введите текст");
     ui->lineEdit->setFocus();
     ui->txtOutput->setReadOnly(true);
+
+    QRegularExpression re("^[a-zA-Z0-9]+$");
+    QRegularExpressionValidator *validator = new QRegularExpressionValidator(re, this);
+    ui->lineEdit->setValidator(validator);
 
     foreach (const QSerialPortInfo &serialPortInfo, QSerialPortInfo::availablePorts())
     {
@@ -70,5 +75,11 @@ void MainWindow::on_pushButton_3_clicked()
 
     serialPort.close();
     ui->lineEdit->clear();
+}
+
+
+void MainWindow::on_lineEdit_returnPressed()
+{
+    emit on_pushButton_3_clicked();
 }
 
