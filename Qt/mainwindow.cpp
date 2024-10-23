@@ -32,7 +32,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_pushButton_3_clicked()
+void MainWindow::on_pushButton_clicked()
 {
     QSerialPort serialPort;
 
@@ -56,7 +56,6 @@ void MainWindow::on_pushButton_3_clicked()
         serialPort.write(q_b);
     } else {
         // Отправляем 1
-        // Следом отправляем размер строки
         q_b.setNum(1);
         serialPort.write(q_b);
     }
@@ -77,9 +76,7 @@ void MainWindow::on_pushButton_3_clicked()
     ui->lineEdit->clear();
 }
 
-
 void MainWindow::on_lineEdit_returnPressed()
 {
-    emit on_pushButton_3_clicked();
+    emit on_pushButton_clicked();
 }
-

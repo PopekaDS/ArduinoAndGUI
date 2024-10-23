@@ -1,4 +1,3 @@
-// https://cs.tealeaf.su/serial-port-gui.html
 #include "mainwindow.h"
 
 #include <QApplication>
