@@ -17,7 +17,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->lineEdit->setFocus();
     ui->txtOutput->setReadOnly(true);
 
-    QRegularExpression re("^[a-zA-Z0-9]+$");
+    // Разрешенные сиволы для ввода: 0-9, A-Z, a-z и !#$%&'()*+,-./:;<=>^_|"[]?@
+    QRegularExpression re("^[a-zA-Z0-9!#$%& '()*+,-.//:;<=>^_|\"\\[\\]\\?\\@]*$");
     QRegularExpressionValidator *validator = new QRegularExpressionValidator(re, this);
     ui->lineEdit->setValidator(validator);
 
