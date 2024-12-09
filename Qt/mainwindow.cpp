@@ -1,3 +1,10 @@
+/*
+* Допустимые символы:
+* !#$%&'()*+,-./:;<=>^_|"[]?@
+* 0-9
+* A-Z
+* a-z
+*/
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
